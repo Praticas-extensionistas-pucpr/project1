@@ -1,0 +1,99 @@
+"use client";
+
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import { useRouter } from "next/navigation";
+
+export interface BarberData {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  bio?: string;
+  avatarUrl?: string;
+}
+
+interface BarberAuthContextType {
+  barber: BarberData | null;
+  token: string | null;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
+  refreshBarber: (updated: BarberData) => void;
+}
+
+const BarberAuthContext = createContext<BarberAuthContextType | null>(null);
+
+export function BarberAuthProvider({ children }: { children: React.ReactNode }) {
+  const [barber, setBarber] = useState<BarberData | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  // Restaura sessão do localStorage ao montar
+  useEffect(() => {
+    const storedToken = localStorage.getItem("barber_token");
+    const storedBarber = localStorage.getItem("barber_data");
+    if (storedToken && storedBarber) {
+      try {
+        setToken(storedToken);
+        setBarber(JSON.parse(storedBarber));
+      } catch {
+        localStorage.removeItem("barber_token");
+        localStorage.removeItem("barber_data");
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  const login = useCallback(
+    async (email: string, password: string) => {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao fazer login.");
+      localStorage.setItem("barber_token", data.token);
+      localStorage.setItem("barber_data", JSON.stringify(data.barber));
+      setToken(data.token);
+      setBarber(data.barber);
+      router.push("/barber/dashboard");
+    },
+    [router]
+  );
+
+  const logout = useCallback(() => {
+    localStorage.removeItem("barber_token");
+    localStorage.removeItem("barber_data");
+    setToken(null);
+    setBarber(null);
+    router.push("/barber/login");
+  }, [router]);
+
+  const refreshBarber = useCallback((updated: BarberData) => {
+    localStorage.setItem("barber_data", JSON.stringify(updated));
+    setBarber(updated);
+  }, []);
+
+  return (
+    <BarberAuthContext.Provider
+      value={{ barber, token, isLoading, login, logout, refreshBarber }}
+    >
+      {children}
+    </BarberAuthContext.Provider>
+  );
+}
+
+export function useBarberAuth(): BarberAuthContextType {
+  const ctx = useContext(BarberAuthContext);
+  if (!ctx)
+    throw new Error("useBarberAuth deve ser usado dentro de BarberAuthProvider");
+  return ctx;
+}
