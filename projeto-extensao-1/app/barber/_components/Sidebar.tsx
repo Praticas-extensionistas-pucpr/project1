@@ -43,12 +43,12 @@ const navItems = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const { barber, logout } = useBarberAuth();
 
   return (
-    <aside className="flex flex-col w-64 min-h-screen bg-zinc-900 border-r border-zinc-800">
+    <aside className="flex flex-col w-64 h-full min-h-screen bg-zinc-900 border-r border-zinc-800">
       {/* Logo/Brand */}
       <div className="flex items-center gap-3 px-6 py-6 border-b border-zinc-800">
         <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-amber-400">
@@ -70,6 +70,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-amber-400 text-zinc-900"

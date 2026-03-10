@@ -142,7 +142,7 @@ export default function AppointmentDetailPage() {
   const transitions = TRANSITIONS[appointment.status] ?? [];
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-4 md:p-6 max-w-2xl mx-auto">
       {/* Back */}
       <Link
         href="/barber/appointments"
@@ -157,7 +157,7 @@ export default function AppointmentDetailPage() {
       {/* Card principal */}
       <div className="bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden">
         {/* Header do card */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-100">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 md:px-6 py-4 md:py-5 border-b border-zinc-100">
           <div>
             <h1 className="text-lg font-bold text-zinc-900">{appointment.clientName}</h1>
             <p className="text-sm text-zinc-500 mt-0.5">
@@ -167,7 +167,7 @@ export default function AppointmentDetailPage() {
           <StatusBadge status={appointment.status} />
         </div>
 
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Cliente */}
           <section>
             <h2 className="text-xs font-semibold text-zinc-400 uppercase tracking-wide mb-3">Cliente</h2>

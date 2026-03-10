@@ -106,7 +106,7 @@ export default function DashboardPage() {
     .sort((a, b) => a.timeSlot.localeCompare(b.timeSlot));
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-zinc-900">
@@ -190,7 +190,7 @@ export default function DashboardPage() {
               <li key={appt._id}>
                 <Link
                   href={`/barber/appointments/${appt._id}`}
-                  className="flex items-center gap-4 px-6 py-4 hover:bg-zinc-50 transition-colors"
+                  className="flex items-center gap-3 px-4 py-3 md:px-6 md:py-4 hover:bg-zinc-50 transition-colors"
                 >
                   {/* Horário */}
                   <div className="text-center min-w-[52px]">

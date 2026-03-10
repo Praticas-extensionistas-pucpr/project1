@@ -87,7 +87,7 @@ export default function AppointmentsPage() {
   }
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-zinc-900">Agendamentos</h1>
@@ -102,12 +102,12 @@ export default function AppointmentsPage() {
           type="date"
           value={filterDate}
           onChange={(e) => setFilterDate(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-700 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="flex-1 min-w-[140px] px-3 py-2 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-700 focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-700 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          className="flex-1 min-w-[140px] px-3 py-2 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-700 focus:outline-none focus:ring-2 focus:ring-amber-400"
         >
           {STATUS_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>
