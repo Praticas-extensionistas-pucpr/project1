@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export interface BarberData {
   _id: string;
@@ -35,7 +36,7 @@ export function BarberAuthProvider({ children }: { children: React.ReactNode }) 
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  // Restaura sessão do localStorage ao montar
+  // Restaura sessão do localStorage ao montar e mantém cookie em sync para o middleware
   useEffect(() => {
     const storedToken = localStorage.getItem("barber_token");
     const storedBarber = localStorage.getItem("barber_data");
@@ -43,9 +44,11 @@ export function BarberAuthProvider({ children }: { children: React.ReactNode }) 
       try {
         setToken(storedToken);
         setBarber(JSON.parse(storedBarber));
+        Cookies.set("barber-token", storedToken, { expires: 7 });
       } catch {
         localStorage.removeItem("barber_token");
         localStorage.removeItem("barber_data");
+        Cookies.remove("barber-token");
       }
     }
     setIsLoading(false);
@@ -62,6 +65,7 @@ export function BarberAuthProvider({ children }: { children: React.ReactNode }) 
       if (!res.ok) throw new Error(data.error || "Erro ao fazer login.");
       localStorage.setItem("barber_token", data.token);
       localStorage.setItem("barber_data", JSON.stringify(data.barber));
+      Cookies.set("barber-token", data.token, { expires: 7 });
       setToken(data.token);
       setBarber(data.barber);
       router.push("/barber/dashboard");
@@ -72,6 +76,7 @@ export function BarberAuthProvider({ children }: { children: React.ReactNode }) 
   const logout = useCallback(() => {
     localStorage.removeItem("barber_token");
     localStorage.removeItem("barber_data");
+    Cookies.remove("barber-token");
     setToken(null);
     setBarber(null);
     router.push("/barber/login");
