@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.6",
     "bcryptjs": "^3.0.3",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.4",
     "next": "16.1.6",
