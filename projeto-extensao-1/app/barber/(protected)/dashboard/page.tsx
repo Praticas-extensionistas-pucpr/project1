@@ -5,6 +5,15 @@ import Link from "next/link";
 import { useBarberAuth } from "@/lib/contexts/BarberAuthContext";
 import StatusBadge from "@/app/barber/_components/StatusBadge";
 
+type EarningsPeriod = "today" | "week" | "month";
+
+interface EarningsData {
+  totalEarnings: number;
+  totalCompleted: number;
+  avgEarnings: number;
+  byService: { name: string; count: number; total: number }[];
+}
+
 interface AppointmentService {
   name: string;
   durationMinutes: number;
@@ -63,6 +72,11 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Earnings state
+  const [earningsPeriod, setEarningsPeriod] = useState<EarningsPeriod>("today");
+  const [earningsData, setEarningsData] = useState<EarningsData | null>(null);
+  const [earningsLoading, setEarningsLoading] = useState(true);
+
   const today = new Date().toISOString().split("T")[0];
   const todayFormatted = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
@@ -70,6 +84,23 @@ export default function DashboardPage() {
     month: "long",
     year: "numeric",
   });
+
+  const fetchEarnings = useCallback(async () => {
+    if (!token) return;
+    setEarningsLoading(true);
+    try {
+      const res = await fetch(`/api/barber/earnings?period=${earningsPeriod}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setEarningsData(data);
+    } catch {
+      setEarningsData(null);
+    } finally {
+      setEarningsLoading(false);
+    }
+  }, [token, earningsPeriod]);
 
   const fetchTodayAppointments = useCallback(async () => {
     if (!token) return;
@@ -100,6 +131,10 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchTodayAppointments();
   }, [fetchTodayAppointments]);
+
+  useEffect(() => {
+    fetchEarnings();
+  }, [fetchEarnings]);
 
   const activeAppointments = appointments
     .filter((a) => a.status === "pending" || a.status === "confirmed")
@@ -218,6 +253,105 @@ export default function DashboardPage() {
               </li>
             ))}
           </ul>
+        )}
+      </div>
+
+      {/* Controle de Ganhos */}
+      <div className="bg-white rounded-xl border border-zinc-200 shadow-sm mt-6">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-100">
+          <h2 className="font-semibold text-zinc-900">Controle de Ganhos</h2>
+          {/* Period tabs */}
+          <div className="flex gap-1 bg-zinc-100 rounded-lg p-1">
+            {(["today", "week", "month"] as EarningsPeriod[]).map((p) => {
+              const labels: Record<EarningsPeriod, string> = { today: "Hoje", week: "Semana", month: "Mês" };
+              return (
+                <button
+                  key={p}
+                  onClick={() => setEarningsPeriod(p)}
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                    earningsPeriod === p
+                      ? "bg-white text-zinc-900 shadow-sm"
+                      : "text-zinc-500 hover:text-zinc-700"
+                  }`}
+                >
+                  {labels[p]}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {earningsLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="w-7 h-7 border-[3px] border-zinc-200 border-t-zinc-800 rounded-full animate-spin" />
+          </div>
+        ) : !earningsData ? (
+          <div className="p-6 text-center text-red-500 text-sm">Erro ao carregar ganhos.</div>
+        ) : (
+          <div className="p-6">
+            {/* Main metrics */}
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="bg-emerald-50 rounded-xl p-4 text-center">
+                <p className="text-xs text-emerald-700 font-medium mb-1">Total Ganho</p>
+                <p className="text-2xl font-bold text-emerald-700">
+                  R$ {earningsData.totalEarnings.toFixed(2).replace(".", ",")}
+                </p>
+              </div>
+              <div className="bg-zinc-50 rounded-xl p-4 text-center">
+                <p className="text-xs text-zinc-500 font-medium mb-1">Atendimentos</p>
+                <p className="text-2xl font-bold text-zinc-900">{earningsData.totalCompleted}</p>
+              </div>
+              <div className="bg-zinc-50 rounded-xl p-4 text-center">
+                <p className="text-xs text-zinc-500 font-medium mb-1">Ticket Médio</p>
+                <p className="text-2xl font-bold text-zinc-900">
+                  R$ {earningsData.avgEarnings.toFixed(2).replace(".", ",")}
+                </p>
+              </div>
+            </div>
+
+            {/* Breakdown by service */}
+            {earningsData.byService.length > 0 ? (
+              <div>
+                <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">
+                  Por serviço
+                </p>
+                <ul className="space-y-2">
+                  {earningsData.byService.map((svc) => {
+                    const pct =
+                      earningsData.totalEarnings > 0
+                        ? (svc.total / earningsData.totalEarnings) * 100
+                        : 0;
+                    return (
+                      <li key={svc.name}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm text-zinc-700 font-medium">{svc.name}</span>
+                          <span className="text-sm text-zinc-500">
+                            {svc.count}× ·{" "}
+                            <span className="font-semibold text-zinc-900">
+                              R$ {svc.total.toFixed(2).replace(".", ",")}
+                            </span>
+                          </span>
+                        </div>
+                        <div className="h-1.5 bg-zinc-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              <div className="text-center py-4">
+                <svg className="w-8 h-8 text-zinc-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-zinc-400 text-sm">Nenhum atendimento concluído neste período.</p>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
