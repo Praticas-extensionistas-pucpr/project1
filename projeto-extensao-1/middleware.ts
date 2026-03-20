@@ -5,19 +5,19 @@ export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Exceção: página de login do cliente — evita loop de redirecionamento
-  if (pathname === "/login" || pathname.startsWith("/login/")) {
-    return NextResponse.next();
-  }
+  // if (pathname === "/login" || pathname.startsWith("/login/")) {
+  //   return NextResponse.next();
+  // }
 
-  // Proteção da rota raiz: exige cookie de cliente (token ou user-token)
-  if (pathname === "/") {
-    const clientToken =
-      request.cookies.get("user-token")?.value ?? request.cookies.get("token")?.value;
-    if (!clientToken) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-    return NextResponse.next();
-  }
+  // // Proteção da rota raiz: exige cookie de cliente (token ou user-token)
+  // if (pathname === "/") {
+  //   const clientToken =
+  //     request.cookies.get("user-token")?.value ?? request.cookies.get("token")?.value;
+  //   if (!clientToken) {
+  //     return NextResponse.redirect(new URL("/login", request.url));
+  //   }
+  //   return NextResponse.next();
+  // }
 
   // Proteção das rotas /barber (exceto /barber/login)
   if (pathname.startsWith("/barber")) {
