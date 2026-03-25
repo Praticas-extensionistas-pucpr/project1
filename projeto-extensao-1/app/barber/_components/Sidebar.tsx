@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useBarberAuth } from "@/lib/contexts/BarberAuthContext";
 
@@ -48,17 +49,19 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
   const { barber, logout } = useBarberAuth();
 
   return (
-    <aside className="flex flex-col w-64 h-full min-h-screen bg-zinc-900 border-r border-zinc-800">
+    <aside className="flex flex-col w-64 h-full min-h-screen bg-[#0a0a0a] border-r border-[#2a2a2a]">
       {/* Logo/Brand */}
-      <div className="flex items-center gap-3 px-6 py-6 border-b border-zinc-800">
-        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-amber-400">
-          <svg className="w-5 h-5 text-zinc-900" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M7 2v2H5v2H3V2h4zm14 0v4h-2V4h-2V2h4zM3 20v-4h2v2h2v2H3zm16 0h-2v-2h2v-2h2v4h-2zM7 6v2H5v2H3V6h4zm4 0h2v2h2v2h-2v2h-2V6zm4 0h2v4h-2V6zM7 14v2H5v2H3v-4h4zm10 0h2v4h-4v-2h2v-2zm-6 0h2v4h-2v-4zm-2-4h2v2H9v-2z"/>
-          </svg>
-        </div>
+      <div className="flex items-center gap-3 px-6 py-6 border-b border-[#2a2a2a]">
+        <Image
+          src="/logo-pole.jfif"
+          alt="Oreia Cuts"
+          width={36}
+          height={36}
+          className="rounded-lg"
+        />
         <div>
-          <p className="text-white font-semibold text-sm leading-none">Barbearia</p>
-          <p className="text-zinc-400 text-xs mt-0.5">Painel do Barbeiro</p>
+          <p className="text-white font-semibold text-sm leading-none">Oreia Cuts</p>
+          <p className="text-[#666666] text-xs mt-0.5">Painel do Barbeiro</p>
         </div>
       </div>
 
@@ -73,8 +76,8 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
               onClick={onClose}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-amber-400 text-zinc-900"
-                  : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                  ? "bg-[#cc0000] text-white"
+                  : "text-[#999999] hover:bg-[#1a1a1a] hover:text-white"
               }`}
             >
               {item.icon}
@@ -85,19 +88,19 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
       </nav>
 
       {/* User info + Logout */}
-      <div className="px-3 py-4 border-t border-zinc-800">
+      <div className="px-3 py-4 border-t border-[#2a2a2a]">
         <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-zinc-700 text-white text-sm font-semibold shrink-0">
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#2a2a2a] text-white text-sm font-semibold shrink-0">
             {barber?.name?.charAt(0).toUpperCase() ?? "B"}
           </div>
           <div className="overflow-hidden">
             <p className="text-white text-sm font-medium truncate">{barber?.name}</p>
-            <p className="text-zinc-500 text-xs truncate">{barber?.email}</p>
+            <p className="text-[#666666] text-xs truncate">{barber?.email}</p>
           </div>
         </div>
         <button
           onClick={logout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-zinc-400 hover:bg-zinc-800 hover:text-red-400 transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[#999999] hover:bg-[#1a1a1a] hover:text-[#cc0000] transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
