@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useBarberAuth } from "@/lib/contexts/BarberAuthContext";
 
 export default function LoginPage() {
@@ -40,27 +41,31 @@ export default function LoginPage() {
   if (isLoading) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-400 mb-4">
-            <svg className="w-8 h-8 text-zinc-900" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M7 2v2H5v2H3V2h4zm14 0v4h-2V4h-2V2h4zM3 20v-4h2v2h2v2H3zm16 0h-2v-2h2v-2h2v4h-2zM7 6v2H5v2H3V6h4zm4 0h2v2h2v2h-2v2h-2V6zm4 0h2v4h-2V6zM7 14v2H5v2H3v-4h4zm10 0h2v4h-4v-2h2v-2zm-6 0h2v4h-2v-4zm-2-4h2v2H9v-2z"/>
-            </svg>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4">
+            <Image
+              src="/logo-navalha.jfif"
+              alt="Oreia Cuts"
+              width={56}
+              height={56}
+              className="rounded-2xl"
+            />
           </div>
-          <h1 className="text-2xl font-bold text-white">Barbearia</h1>
-          <p className="text-zinc-400 text-sm mt-1">Acesse o painel do barbeiro</p>
+          <h1 className="text-2xl font-bold text-white">Oreia Cuts</h1>
+          <p className="text-[#999999] text-sm mt-1">Acesse o painel do barbeiro</p>
         </div>
 
         {/* Card */}
-        <div className="bg-zinc-800 rounded-2xl p-8 shadow-xl border border-zinc-700">
+        <div className="bg-[#1a1a1a] rounded-2xl p-8 shadow-xl border border-[#2a2a2a]">
           <h2 className="text-lg font-semibold text-white mb-6">Entrar</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {/* E-mail */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+              <label className="block text-sm font-medium text-[#cccccc] mb-1.5">
                 E-mail
               </label>
               <input
@@ -69,13 +74,13 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com"
                 autoComplete="email"
-                className="w-full px-4 py-2.5 rounded-lg bg-zinc-700 border border-zinc-600 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm"
+                className="w-full px-4 py-2.5 rounded-lg bg-[#2a2a2a] border border-[#333333] text-white placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#cc0000] focus:border-transparent text-sm"
               />
             </div>
 
             {/* Senha */}
             <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+              <label className="block text-sm font-medium text-[#cccccc] mb-1.5">
                 Senha
               </label>
               <div className="relative">
@@ -85,12 +90,12 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   autoComplete="current-password"
-                  className="w-full px-4 py-2.5 pr-11 rounded-lg bg-zinc-700 border border-zinc-600 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-sm"
+                  className="w-full px-4 py-2.5 pr-11 rounded-lg bg-[#2a2a2a] border border-[#333333] text-white placeholder-[#666666] focus:outline-none focus:ring-2 focus:ring-[#cc0000] focus:border-transparent text-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute inset-y-0 right-0 px-3 flex items-center text-zinc-400 hover:text-zinc-200"
+                  className="absolute inset-y-0 right-0 px-3 flex items-center text-[#666666] hover:text-[#999999]"
                 >
                   {showPassword ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +113,7 @@ export default function LoginPage() {
 
             {/* Erro */}
             {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-900/40 border border-red-700/50 text-red-300 text-sm">
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-[#4d0000] border border-[#800000] text-[#ff6666] text-sm">
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -120,11 +125,11 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-2.5 px-4 rounded-lg bg-amber-400 hover:bg-amber-300 disabled:bg-amber-400/50 text-zinc-900 font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 rounded-lg bg-[#cc0000] hover:bg-[#ff0000] disabled:bg-[#cc0000]/50 text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2"
             >
               {submitting ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-zinc-700 border-t-zinc-900 rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-[#333333] border-t-[#cc0000] rounded-full animate-spin" />
                   Entrando...
                 </>
               ) : (
@@ -134,7 +139,7 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="text-center text-zinc-600 text-xs mt-6">
+        <p className="text-center text-[#666666] text-xs mt-6">
           Área restrita — apenas barbeiros cadastrados
         </p>
       </div>

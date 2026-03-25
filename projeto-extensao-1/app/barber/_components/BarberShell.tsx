@@ -18,10 +18,10 @@ export default function BarberShell({ children }: { children: React.ReactNode })
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-zinc-50">
+      <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-zinc-300 border-t-zinc-900 rounded-full animate-spin" />
-          <p className="text-zinc-500 text-sm">Carregando...</p>
+          <div className="w-8 h-8 border-4 border-[#2a2a2a] border-t-[#cc0000] rounded-full animate-spin" />
+          <p className="text-[#666666] text-sm">Carregando...</p>
         </div>
       </div>
     );
@@ -30,7 +30,7 @@ export default function BarberShell({ children }: { children: React.ReactNode })
   if (!token) return null;
 
   return (
-    <div className="flex min-h-screen bg-zinc-50">
+    <div className="flex min-h-screen bg-[#0a0a0a]">
       {/* Overlay backdrop (mobile only) */}
       {sidebarOpen && (
         <div
@@ -51,10 +51,10 @@ export default function BarberShell({ children }: { children: React.ReactNode })
       {/* Main content */}
       <div className="flex flex-col flex-1 min-w-0">
         {/* Mobile top bar */}
-        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800 shrink-0">
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0a0a0a] border-b border-[#2a2a2a] shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="p-1.5 rounded-lg text-[#999999] hover:text-white hover:bg-[#1a1a1a] transition-colors"
             aria-label="Abrir menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,12 +63,8 @@ export default function BarberShell({ children }: { children: React.ReactNode })
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-400">
-              <svg className="w-4 h-4 text-zinc-900" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7 2v2H5v2H3V2h4zm14 0v4h-2V4h-2V2h4zM3 20v-4h2v2h2v2H3zm16 0h-2v-2h2v-2h2v4h-2zM7 6v2H5v2H3V6h4zm4 0h2v2h2v2h-2v2h-2V6zm4 0h2v4h-2V6zM7 14v2H5v2H3v-4h4zm10 0h2v4h-4v-2h2v-2zm-6 0h2v4h-2v-4zm-2-4h2v2H9v-2z" />
-              </svg>
-            </div>
-            <p className="text-white font-semibold text-sm">Barbearia</p>
+            <div className="w-7 h-7 rounded-lg bg-[#cc0000]" />
+            <p className="text-white font-semibold text-sm">Oreia Cuts</p>
           </div>
 
           {/* Spacer to center title */}

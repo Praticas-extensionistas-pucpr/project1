@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -78,7 +79,7 @@ function AvatarPlaceholder({ name }: { name: string }) {
 function Spinner() {
   return (
     <div className="flex justify-center py-12">
-      <div className="w-7 h-7 border-4 border-zinc-200 border-t-zinc-800 rounded-full animate-spin" />
+      <div className="w-7 h-7 border-4 border-[#1a1a1a] border-t-[#cc0000] rounded-full animate-spin" />
     </div>
   );
 }
@@ -96,11 +97,11 @@ function StepHeader({
 }) {
   return (
     <div className="mb-6">
-      <p className="text-xs font-semibold text-amber-500 uppercase tracking-widest mb-1">
+      <p className="text-xs font-semibold text-[#cc0000] uppercase tracking-widest mb-1">
         Passo {step} de {total}
       </p>
-      <h2 className="text-xl font-bold text-zinc-900">{title}</h2>
-      {subtitle && <p className="text-zinc-500 text-sm mt-1">{subtitle}</p>}
+      <h2 className="text-xl font-bold text-white">{title}</h2>
+      {subtitle && <p className="text-[#999999] text-sm mt-1">{subtitle}</p>}
     </div>
   );
 }
@@ -302,11 +303,11 @@ function BookingWizardInner() {
   // ── Wizard ────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col" ref={topRef}>
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col" ref={topRef}>
       <NavBar />
 
       {/* Progress bar */}
-      <div className="bg-white border-b border-zinc-100 px-4 sm:px-6 py-3">
+      <div className="bg-[#1a1a1a] border-b border-[#2a2a2a] px-4 sm:px-6 py-3">
         <div className="max-w-xl mx-auto">
           <div className="flex items-center gap-1.5">
             {STEPS.map((label, i) => {
@@ -318,10 +319,10 @@ function BookingWizardInner() {
                   <div
                     className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 transition-colors ${
                       done
-                        ? "bg-amber-400 text-zinc-900"
+                        ? "bg-[#cc0000] text-white"
                         : active
-                        ? "bg-zinc-900 text-white"
-                        : "bg-zinc-200 text-zinc-400"
+                        ? "bg-white text-[#0a0a0a]"
+                        : "bg-[#2a2a2a] text-[#666666]"
                     }`}
                   >
                     {done ? (
@@ -334,13 +335,13 @@ function BookingWizardInner() {
                   </div>
                   <span
                     className={`text-xs font-medium truncate hidden sm:block ${
-                      active ? "text-zinc-900" : done ? "text-zinc-500" : "text-zinc-300"
+                      active ? "text-white" : done ? "text-[#999999]" : "text-[#666666]"
                     }`}
                   >
                     {label}
                   </span>
                   {i < STEPS.length - 1 && (
-                    <div className={`h-px flex-1 mx-1 ${done ? "bg-amber-400" : "bg-zinc-200"}`} />
+                    <div className={`h-px flex-1 mx-1 ${done ? "bg-[#cc0000]" : "bg-[#2a2a2a]"}`} />
                   )}
                 </div>
               );
@@ -365,7 +366,7 @@ function BookingWizardInner() {
               {loadingBarbers ? (
                 <Spinner />
               ) : barbers.length === 0 ? (
-                <p className="text-zinc-400 text-sm text-center py-10">Nenhum barbeiro disponível.</p>
+                <p className="text-[#666666] text-sm text-center py-10">Nenhum barbeiro disponível.</p>
               ) : (
                 <div className="space-y-3">
                   {barbers.map((barber) => (
@@ -380,8 +381,8 @@ function BookingWizardInner() {
                       }}
                       className={`w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all ${
                         selectedBarber?._id === barber._id
-                          ? "border-amber-400 bg-amber-50 shadow-sm"
-                          : "border-zinc-200 bg-white hover:border-zinc-300 hover:shadow-sm"
+                          ? "border-[#cc0000] bg-[#1a0000] shadow-sm"
+                          : "border-[#2a2a2a] bg-[#1a1a1a] hover:border-[#333333] hover:shadow-sm"
                       }`}
                     >
                       {barber.avatarUrl ? (
