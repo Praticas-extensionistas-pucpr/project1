@@ -3,18 +3,20 @@ import type { Config } from "tailwindcss";
 const config: Config = {
   theme: {
     extend: {
+      fontFamily: {
+        display: ["var(--font-playfair)", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
       colors: {
-        // Premium Dark Mode - Oreia Cuts Branding
-        premium: {
-          dark: "#0a0a0a",      // Main background
-          red: "#cc0000",        // Primary action (buttons)
-          blue: "#0047ab",       // Secondary highlight
-          light: "#ededed",      // Light text
+        oreia: {
+          white: "#ffffff",
+          surface: "#f5f5f5",
+          border: "#e8e8e8",
+          muted: "#888888",
+          text: "#0a0a0a",
+          red: "#cc0000",
+          blue: "#0047ab",
         },
-        // Maintain compatibility with existing colors temporarily
-        "brand-primary": "#cc0000",
-        "brand-secondary": "#0047ab",
-        "brand-dark": "#0a0a0a",
       },
     },
   },

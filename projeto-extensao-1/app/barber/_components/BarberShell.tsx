@@ -18,10 +18,10 @@ export default function BarberShell({ children }: { children: React.ReactNode })
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]">
+      <div className="flex items-center justify-center min-h-screen bg-[#f5f5f5]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-[#2a2a2a] border-t-[#cc0000] rounded-full animate-spin" />
-          <p className="text-[#666666] text-sm">Carregando...</p>
+          <div className="w-8 h-8 border-4 border-[#e8e8e8] border-t-[#cc0000] rounded-full animate-spin" />
+          <p className="text-[#888888] text-sm font-medium">Carregando...</p>
         </div>
       </div>
     );
@@ -30,16 +30,16 @@ export default function BarberShell({ children }: { children: React.ReactNode })
   if (!token) return null;
 
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a]">
-      {/* Overlay backdrop (mobile only) */}
+    <div className="flex min-h-screen bg-[#f5f5f5]">
+      {/* Overlay backdrop (mobile) */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          className="fixed inset-0 bg-black/40 z-20 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar — drawer on mobile, static on desktop */}
+      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-30 transition-transform duration-200 md:relative md:translate-x-0 md:flex md:shrink-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -51,10 +51,10 @@ export default function BarberShell({ children }: { children: React.ReactNode })
       {/* Main content */}
       <div className="flex flex-col flex-1 min-w-0">
         {/* Mobile top bar */}
-        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0a0a0a] border-b border-[#2a2a2a] shrink-0">
+        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-[#e8e8e8] shrink-0">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-1.5 rounded-lg text-[#999999] hover:text-white hover:bg-[#1a1a1a] transition-colors"
+            className="p-2 rounded-lg text-[#888888] hover:text-[#0a0a0a] hover:bg-[#f5f5f5] transition-colors"
             aria-label="Abrir menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,12 +63,11 @@ export default function BarberShell({ children }: { children: React.ReactNode })
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#cc0000]" />
-            <p className="text-white font-semibold text-sm">Oreia Cuts</p>
+            <img src="/logo-pole.jfif" alt="Oreia Cuts" width={28} height={28} className="rounded-md" />
+            <p className="text-[#0a0a0a] text-xs font-bold uppercase tracking-[0.2em]">Oreia Cuts</p>
           </div>
 
-          {/* Spacer to center title */}
-          <div className="w-8" />
+          <div className="w-9" />
         </header>
 
         <main className="flex-1 overflow-auto">{children}</main>

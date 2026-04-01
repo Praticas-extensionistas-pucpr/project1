@@ -25,6 +25,15 @@ const navItems = [
     ),
   },
   {
+    href: "/barber/clientes",
+    label: "Clientes",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ),
+  },
+  {
     href: "/barber/services",
     label: "Serviços",
     icon: (
@@ -49,9 +58,10 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
   const { barber, logout } = useBarberAuth();
 
   return (
-    <aside className="flex flex-col w-64 h-full min-h-screen bg-[#0a0a0a] border-r border-[#2a2a2a]">
-      {/* Logo/Brand */}
-      <div className="flex items-center gap-3 px-6 py-6 border-b border-[#2a2a2a]">
+    <aside className="flex flex-col w-64 h-full min-h-screen bg-white border-r border-[#e8e8e8]">
+
+      {/* Logo */}
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-[#e8e8e8]">
         <Image
           src="/logo-pole.jfif"
           alt="Oreia Cuts"
@@ -60,8 +70,10 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
           className="rounded-lg"
         />
         <div>
-          <p className="text-white font-semibold text-sm leading-none">Oreia Cuts</p>
-          <p className="text-[#666666] text-xs mt-0.5">Painel do Barbeiro</p>
+          <p className="text-[#0a0a0a] text-xs font-bold uppercase tracking-[0.2em] leading-none">
+            Oreia Cuts
+          </p>
+          <p className="text-[#888888] text-xs mt-1 uppercase tracking-[0.1em]">Painel</p>
         </div>
       </div>
 
@@ -74,10 +86,10 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-semibold transition-colors duration-200 ${
                 isActive
                   ? "bg-[#cc0000] text-white"
-                  : "text-[#999999] hover:bg-[#1a1a1a] hover:text-white"
+                  : "text-[#888888] hover:bg-[#f5f5f5] hover:text-[#0a0a0a]"
               }`}
             >
               {item.icon}
@@ -88,19 +100,21 @@ export default function Sidebar({ onClose }: { onClose?: () => void }) {
       </nav>
 
       {/* User info + Logout */}
-      <div className="px-3 py-4 border-t border-[#2a2a2a]">
-        <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[#2a2a2a] text-white text-sm font-semibold shrink-0">
+      <div className="px-3 py-4 border-t border-[#e8e8e8]">
+        {/* Avatar + nome */}
+        <div className="flex items-center gap-3 px-3 py-3 mb-1 bg-[#f5f5f5] rounded-lg">
+          <div className="flex items-center justify-center w-9 h-9 rounded-full bg-[#0a0a0a] text-white text-sm font-bold shrink-0">
             {barber?.name?.charAt(0).toUpperCase() ?? "B"}
           </div>
-          <div className="overflow-hidden">
-            <p className="text-white text-sm font-medium truncate">{barber?.name}</p>
-            <p className="text-[#666666] text-xs truncate">{barber?.email}</p>
+          <div className="overflow-hidden flex-1 min-w-0">
+            <p className="text-[#0a0a0a] text-sm font-semibold truncate">{barber?.name}</p>
+            <p className="text-[#888888] text-xs truncate">{barber?.email}</p>
           </div>
         </div>
+
         <button
           onClick={logout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-[#999999] hover:bg-[#1a1a1a] hover:text-[#cc0000] transition-colors"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-[#888888] hover:bg-[#f5f5f5] hover:text-[#cc0000] transition-colors duration-200"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

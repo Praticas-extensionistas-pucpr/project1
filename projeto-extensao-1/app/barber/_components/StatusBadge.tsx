@@ -3,31 +3,31 @@ type Status = "pending" | "confirmed" | "cancelled" | "completed";
 const config: Record<Status, { label: string; className: string }> = {
   pending: {
     label: "Aguardando",
-    className: "bg-[#3a2200] text-[#ffaa00] border border-[#664400]",
+    className: "bg-amber-50 text-amber-700 border border-amber-200",
   },
   confirmed: {
     label: "Confirmado",
-    className: "bg-[#001a4d] text-[#0080ff] border border-[#003366]",
+    className: "bg-blue-50 text-[#0047ab] border border-blue-200",
   },
   completed: {
-    label: "Concluínído",
-    className: "bg-[#003300] text-[#00cc00] border border-[#006600]",
+    label: "Concluído",
+    className: "bg-green-50 text-green-700 border border-green-200",
   },
   cancelled: {
     label: "Cancelado",
-    className: "bg-[#330000] text-[#ff4444] border border-[#660000]",
+    className: "bg-red-50 text-[#cc0000] border border-red-200",
   },
 };
 
 export default function StatusBadge({ status }: { status: string }) {
   const cfg = config[status as Status] ?? {
     label: status,
-    className: "bg-[#1a1a1a] text-[#666666] border border-[#2a2a2a]",
+    className: "bg-[#f5f5f5] text-[#888888] border border-[#e8e8e8]",
   };
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${cfg.className}`}
+      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-[0.05em] ${cfg.className}`}
     >
       {cfg.label}
     </span>
