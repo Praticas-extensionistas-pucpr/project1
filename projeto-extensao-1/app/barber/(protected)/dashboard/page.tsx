@@ -65,7 +65,7 @@ function StatCard({
 // ── Dashboard ──────────────────────────────────────────────────────────────────
 
 export default function DashboardPage() {
-  const { token, barber } = useBarberAuth();
+  const { token, barber, logout } = useBarberAuth();
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [stats, setStats] = useState<Stats>({
@@ -98,7 +98,10 @@ export default function DashboardPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        if (res.status === 401) { logout(); return; }
+        throw new Error(data.error);
+      }
       setEarningsData(data);
     } catch {
       setEarningsData(null);
@@ -116,7 +119,10 @@ export default function DashboardPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        if (res.status === 401) { logout(); return; }
+        throw new Error(data.error);
+      }
       const list: Appointment[] = data.data;
       setAppointments(list);
       setStats({

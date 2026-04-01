@@ -1,4 +1,5 @@
 import { BarberAuthProvider } from "@/lib/contexts/BarberAuthContext";
+import { NotificationProvider } from "@/lib/contexts/NotificationContext";
 
 export const metadata = {
   title: "Painel do Barbeiro | Barbearia",
@@ -11,5 +12,9 @@ export const metadata = {
  * O guard fica em app/barber/(protected)/layout.tsx.
  */
 export default function BarberLayout({ children }: { children: React.ReactNode }) {
-  return <BarberAuthProvider>{children}</BarberAuthProvider>;
+  return (
+    <BarberAuthProvider>
+      <NotificationProvider>{children}</NotificationProvider>
+    </BarberAuthProvider>
+  );
 }

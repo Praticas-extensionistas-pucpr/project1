@@ -30,6 +30,18 @@ interface BarberAuthContextType {
 
 const BarberAuthContext = createContext<BarberAuthContextType | null>(null);
 
+/** Decodifica o payload do JWT (sem verificar assinatura) e checa se expirou. */
+function isTokenExpired(token: string): boolean {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(base64));
+    return typeof payload.exp === "number" && payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+}
+
 export function BarberAuthProvider({ children }: { children: React.ReactNode }) {
   const [barber, setBarber] = useState<BarberData | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -41,14 +53,21 @@ export function BarberAuthProvider({ children }: { children: React.ReactNode }) 
     const storedToken = localStorage.getItem("barber_token");
     const storedBarber = localStorage.getItem("barber_data");
     if (storedToken && storedBarber) {
-      try {
-        setToken(storedToken);
-        setBarber(JSON.parse(storedBarber));
-        Cookies.set("barber-token", storedToken, { expires: 7 });
-      } catch {
+      if (isTokenExpired(storedToken)) {
+        // Token expirado — limpa tudo para forçar novo login
         localStorage.removeItem("barber_token");
         localStorage.removeItem("barber_data");
         Cookies.remove("barber-token");
+      } else {
+        try {
+          setToken(storedToken);
+          setBarber(JSON.parse(storedBarber));
+          Cookies.set("barber-token", storedToken, { expires: 7 });
+        } catch {
+          localStorage.removeItem("barber_token");
+          localStorage.removeItem("barber_data");
+          Cookies.remove("barber-token");
+        }
       }
     }
     setIsLoading(false);
